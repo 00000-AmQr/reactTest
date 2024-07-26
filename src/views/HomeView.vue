@@ -11,8 +11,8 @@
         <span class="listSpan">{{todos.length}}</span>
       </h2>
       <ol>  
-        <li v-for="todo in todos" :key="todo.id" class="listItem">  
-          <input type="checkbox" @click="completed(todo.id)">
+        <li v-for="todo in todos" :key="todo.id" class="listItem">
+          <input type="checkbox" @click="completed(todo.id,todo.name)">
           <input v-bind:value="todo.name" v-on:input="changeValue" :disabled="todo.status" type="text" :class="[todo.status?'input':'active']"/>  
           <a href="##" @click="handleDelete(todo.id)">删除</a>
           <a v-if="todo.status" href="##" @click="handleEdit(todo.id)">修改</a> 
@@ -38,11 +38,11 @@
 import { ref } from 'vue';  
 // 初始化新的待办事项   
 var currentValue=ref('');
-var value=ref('');
+var value='';
 // 待办事项列表  
 var todos = ref([{
   id:0,
-  name:'aaa',
+  name:'test',
   status:true
 }]);  
 var selected = ref([]); 
@@ -50,18 +50,18 @@ var selected = ref([]);
 // 添加新的事项  
 function addTodo() { 
   var item={
-    id:todos.length,
+    id:todos.value.length,
     name:value,
     status:true
   }
   todos.value.push(item)
-  console.log("list",todos,selected)
   value='';
 
 }  
 
 function handleDelete(id){
-  todos=todos.value.filter(item=>item.id!=id)
+  var test=todos.value.filter(item=>item.id!=id)
+  todos=ref(test)
 }
 function handleEdit(id){
   todos.value.forEach(item => {
@@ -84,16 +84,12 @@ function confirm(id){
   })
   currentValue='';
 }
-function completed(id){
-  todos.value.forEach(item => {
-  if(item.id==id){
-      var newItem={
-        id:selected.length,
-        name:item.name
-      }
-      selected.value.push(newItem)
-    }
-  })
+function completed(id,name){
+  var newItem={
+    id:selected.value.length,
+    name:name
+  }
+  selected.value.push(newItem)
   handleDelete(id);
 }
 </script> 
