@@ -5,7 +5,7 @@
 module.exports = {
   assetsDir:'static',
   parallel:false,
-  publicPath:'./',
+  publicPath:'/reactTest/',
   devServer:{
       port:5000,//端口号
       open:true, //是否自启动
